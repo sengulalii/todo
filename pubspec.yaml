@@ -46,10 +46,13 @@ dependencies:
   syncfusion_localizations: ^20.3.57
   klocalizations_flutter: ^0.0.4
   syncfusion_flutter_calendar: ^20.3.57
+  table_calendar: ^3.0.8
+  percent_indicator: ^4.2.2
   
 dev_dependencies:
   build_runner: ^2.2.1
   flutter_launcher_icons: ^0.11.0
+  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

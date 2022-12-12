@@ -14,6 +14,11 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       fullTime: json['fullTime'] == null
           ? null
           : DateTime.parse(json['fullTime'] as String),
+      notificationHour: json['notificationHour'] as String?,
+      notificationMinute: json['notificationMinute'] as String?,
+      notificationYear: json['notificationYear'] as String?,
+      notificationMonth: json['notificationMonth'] as String?,
+      notificationDay: json['notificationDay'] as String?,
     );
 
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
@@ -22,4 +27,9 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'taskDate': instance.taskDate,
       'taskName': instance.taskName,
       'fullTime': instance.fullTime?.toIso8601String(),
+      'notificationHour': instance.notificationHour,
+      'notificationMinute': instance.notificationMinute,
+      'notificationYear': instance.notificationYear,
+      'notificationMonth': instance.notificationMonth,
+      'notificationDay': instance.notificationDay,
     };

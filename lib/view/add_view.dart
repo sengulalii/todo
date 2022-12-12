@@ -17,7 +17,7 @@ import 'package:todo/view_model/sf_calendar.dart';
 import 'package:todo/view_model/task_crud_viewmodel.dart';
 
 class AddTask extends StatefulWidget with PageHelper {
-  const AddTask({super.key});
+  AddTask({super.key});
 
   @override
   State<AddTask> createState() => _AddTaskState();
@@ -29,7 +29,7 @@ class _AddTaskState extends State<AddTask> {
   DateTime cupertinoInitialDateTime = DateTime.now();
   String uidMonth = "";
   String uiDay = "";
-
+  String _notification = "";
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -112,7 +112,7 @@ class _AddTaskState extends State<AddTask> {
           return Column(
             children: [
               Visibility(
-                visible: dateVisible,
+                visible: PageHelper.dateVisible,
                 child: Container(
                   color: Colors.transparent,
                   width: double.infinity,
@@ -137,7 +137,7 @@ class _AddTaskState extends State<AddTask> {
                 height: 8,
               ),
               Visibility(
-                visible: dateVisible,
+                visible: PageHelper.dateVisible,
                 child: PageHelper.paddingHelper(),
               ),
             ],
@@ -146,8 +146,9 @@ class _AddTaskState extends State<AddTask> {
           return Column(
             children: [
               Visibility(
-                visible: dateVisible,
+                visible: PageHelper.dateVisible,
                 child: SfCalendar(
+                  dataSource: getCalendarData,
                   viewHeaderHeight: 30,
                   headerStyle:
                       CalendarHeaderStyle(textStyle: PageHelper.textStyle()),
@@ -156,15 +157,16 @@ class _AddTaskState extends State<AddTask> {
                   onTap: onTapChanged,
                   onViewChanged: viewChanged,
                   monthViewSettings: const MonthViewSettings(
+                      showAgenda: true,
                       appointmentDisplayMode:
-                          MonthAppointmentDisplayMode.appointment),
+                          MonthAppointmentDisplayMode.indicator),
                 ),
               ),
               const SizedBox(
                 height: 8,
               ),
               Visibility(
-                visible: dateVisible,
+                visible: PageHelper.dateVisible,
                 child: PageHelper.paddingHelper(),
               ),
             ],
@@ -176,7 +178,7 @@ class _AddTaskState extends State<AddTask> {
 
   Widget cupertinoDataPicker() {
     return Visibility(
-      visible: timeVisible,
+      visible: PageHelper.timeVisible,
       child: Column(
         children: [
           SizedBox(
@@ -189,14 +191,15 @@ class _AddTaskState extends State<AddTask> {
               onDateTimeChanged: (newDateTime) {
                 setState(() {
                   cupertinoInitialDateTime = newDateTime;
-                  hour = newDateTime.hour;
-                  minute = newDateTime.minute;
+                  _notification = "${newDateTime.hour},${newDateTime.minute}";
+                  PageHelper.hour = newDateTime.hour;
+                  PageHelper.minute = newDateTime.minute;
                 });
               },
             ),
           ),
           Visibility(
-            visible: timeVisible,
+            visible: PageHelper.timeVisible,
             child: PageHelper.paddingHelper(),
           ),
         ],
@@ -240,11 +243,11 @@ class _AddTaskState extends State<AddTask> {
         GestureDetector(
           onTap: (() {
             setState(() {
-              dateVisible = true;
-              timeVisible = false;
-              select = 1;
-              color1 = Colors.grey.shade300;
-              color2 = Colors.white;
+              PageHelper.dateVisible = true;
+              PageHelper.timeVisible = false;
+              PageHelper.select = 1;
+              PageHelper.color1 = Colors.grey.shade300;
+              PageHelper.color2 = Colors.white;
             });
           }),
           child: Padding(
@@ -256,7 +259,7 @@ class _AddTaskState extends State<AddTask> {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: color1,
+                color: PageHelper.color1,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -265,7 +268,7 @@ class _AddTaskState extends State<AddTask> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 5.0),
                       child: Text(
-                        dayNum.toString(),
+                        PageHelper.dayNum.toString(),
                         style: const TextStyle(
                             fontSize: 18, fontFamily: "DonegalOne"),
                       ),
@@ -301,11 +304,11 @@ class _AddTaskState extends State<AddTask> {
     return GestureDetector(
       onTap: (() {
         setState(() {
-          timeVisible = true;
-          dateVisible = false;
-          select = 2;
-          color2 = Colors.grey.shade300;
-          color1 = Colors.white;
+          PageHelper.timeVisible = true;
+          PageHelper.dateVisible = false;
+          PageHelper.select = 2;
+          PageHelper.color2 = Colors.grey.shade300;
+          PageHelper.color1 = Colors.white;
         });
       }),
       child: Padding(
@@ -315,7 +318,7 @@ class _AddTaskState extends State<AddTask> {
           height: 30,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: color2,
+            color: PageHelper.color2,
           ),
           child: Center(
             child: Text(
@@ -371,6 +374,7 @@ class _AddTaskState extends State<AddTask> {
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)))),
             onPressed: () {
+              PageHelper.dateVisible = true;
               Navigator.pop(context);
             },
             child: const Text(
@@ -400,8 +404,12 @@ class _AddTaskState extends State<AddTask> {
                       ? 0
                       : notification.notificationList.last.id + 1,
                   taskText.text,
-                  hour,
-                  minute);
+                  PageHelper.years,
+                  PageHelper.months,
+                  PageHelper.days,
+                  PageHelper.hour,
+                  PageHelper.minute);
+              PageHelper.dateVisible = true;
             },
             child: const Text(
               "Kaydet",
@@ -417,11 +425,16 @@ class _AddTaskState extends State<AddTask> {
   void onTapChanged(CalendarTapDetails details) {
     setState(() {
       dynamic appointment = details.appointments;
-      dayNum = details.date!.day;
-      month = details.date!.month;
-      year = details.date!.year;
-      fullDateTime = details.date!;
-      debugPrint(fullDateTime.toString());
+      PageHelper.dayNum = details.date!.day;
+      PageHelper.month = details.date!.month;
+      PageHelper.year = details.date!.year;
+      PageHelper.taskDateTime = details.date!;
+
+      PageHelper.years = details.date!.year;
+      PageHelper.months = details.date!.month;
+      PageHelper.days = details.date!.day;
+
+      debugPrint(PageHelper.taskDateTime.toString());
       uidMonth = DateFormat.MMMM('tr').format(details.date!);
       uiDay = DateFormat.EEEE('tr').format(details.date!);
       CalendarElement element = details.targetElement;
@@ -440,6 +453,9 @@ class _AddTaskState extends State<AddTask> {
       setState(() {
         uiDay = DateFormat.EEEE('tr').format(DateTime.now());
         uidMonth = DateFormat.MMMM('tr').format(DateTime.now());
+        PageHelper.days;
+        PageHelper.years;
+        PageHelper.months;
       });
     });
   }
@@ -456,7 +472,12 @@ class _AddTaskState extends State<AddTask> {
               : notification.notificationList.last.id + 1,
           date: DateTime.now().toString(),
           fullTime: DateTime.now(),
-          taskDate: fullDateTime.toString(),
+          taskDate: PageHelper.taskDateTime.toString(),
+          notificationHour: PageHelper.hour.toString(),
+          notificationMinute: PageHelper.minute.toString(),
+          notificationYear: PageHelper.years.toString(),
+          notificationMonth: PageHelper.months.toString(),
+          notificationDay: PageHelper.days.toString(),
           taskName: taskText.text,
         );
         await Provider.of<TaskViewModel>(context, listen: false)

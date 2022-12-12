@@ -12,7 +12,7 @@ class CreateViewModel extends ChangeNotifier {
         mail,
         pass,
       );
-      DatabaseService.addData(
+      DatabaseService.addUser(
         usersCollection,
         {"email": mail, "uid": uid.user?.uid},
         uid.user?.uid,

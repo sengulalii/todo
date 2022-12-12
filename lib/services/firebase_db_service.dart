@@ -45,6 +45,7 @@ class FirebaseDbService implements AbstractDbService {
         .collection(taskCollection)
         .doc(uid)
         .collection(myTaskCollection)
+        .orderBy('fullTime', descending: false)
         .snapshots();
     return querySnapshot.map((taskList) =>
         taskList.docs.map((task) => Task.fromJson(task.data())).toList());

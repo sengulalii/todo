@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseService {
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  static Future addData(String collection, Map<String, dynamic> data,
+  static Future addUser(String collection, Map<String, dynamic> data,
       [String? doc]) async {
     try {
       if (doc == null) {

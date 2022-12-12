@@ -10,8 +10,8 @@ import 'package:todo/services/abstract_login_service.dart';
 import 'package:todo/services/firebase_create_service.dart';
 import 'package:todo/services/firebase_db_service.dart';
 import 'package:todo/services/firebase_login_service.dart';
-import 'package:todo/view/auth_page.dart';
-import 'package:todo/view/home_page.dart';
+import 'package:todo/view/auth_view.dart';
+import 'package:todo/view/home_view.dart';
 import 'package:todo/view_model/select_viewmodel.dart';
 import 'package:todo/view_model/sf_calendar.dart';
 import 'package:todo/view_model/task_crud_viewmodel.dart';
@@ -84,7 +84,7 @@ class _MyAppState extends State<MyApp> {
     if (result == true) {
       homeWidget = const HomePage();
     } else {
-      homeWidget = const AuthPage();
+      homeWidget = AuthPage();
     }
   }
 }

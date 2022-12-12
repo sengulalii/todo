@@ -14,18 +14,11 @@ class Notifications extends ChangeNotifier {
   }
 
   List<PendingNotificationRequest> notificationList = [];
-  List<PendingNotificationRequest> notificationLists = [];
 
   Future<int> getPendingNotificationCount() async {
-    notificationLists =
+    notificationList =
         await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-    if (notificationList.isNotEmpty) {
-      debugPrint("görev sayın ${notificationList.length}");
-      notificationList = notificationLists;
-    } else {
-      debugPrint("görev sayın ${notificationList.length}");
-      notificationList = notificationLists;
-    }
+    debugPrint("${notificationList.length} sayı");
     return notificationList.length;
   }
 
@@ -46,6 +39,8 @@ class Notifications extends ChangeNotifier {
       'channel name',
       priority: Priority.max,
       importance: Importance.max,
+      sound: UriAndroidNotificationSound("assets/tunes/notification.mp3"),
+      playSound: true,
     );
     NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpesific,
@@ -58,8 +53,12 @@ class Notifications extends ChangeNotifier {
     );
   }
 
-  Future<void> scheduleWeeklyNotification(
-      int id, String body, int hour, int minute) async {
+  Future<void> scheduleWeeklyNotification(int id, String body, int year,
+      int month, int day, int hour, int minute) async {
+    tz.initializeTimeZones();
+    var d = DateTime(year, month, day, hour, minute);
+    var dStr = d.toString();
+    var time = tz.TZDateTime.parse(tz.local, dStr);
     // ignore: prefer_const_constructors
     final details = NotificationDetails(
       // ignore: prefer_const_constructors
@@ -68,6 +67,8 @@ class Notifications extends ChangeNotifier {
         'name',
         priority: Priority.max,
         playSound: true,
+        sound:
+            const UriAndroidNotificationSound("assets/tunes/notification.mp3"),
         importance: Importance.max,
       ),
     );
@@ -76,7 +77,7 @@ class Notifications extends ChangeNotifier {
       id,
       'Hatırlatıcı',
       body,
-      _netxinstanceofFryday(hour, minute),
+      time,
       details,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
@@ -84,25 +85,32 @@ class Notifications extends ChangeNotifier {
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
     );
   }
-
-  tz.TZDateTime _netxinstanceofFryday(int hour, int minute) {
-    tz.TZDateTime scheduleDate = _netxinstanceofTenAM(hour, minute);
+/* 
+  tz.TZDateTime _netxinstanceofFryday(
+      int year, int month, int day, int hour, int minute) {
+    tz.TZDateTime scheduleDate =
+        _netxinstanceofTenAM(year, month, day, hour, minute);
     /* while (scheduleDate.weekday != DateTime.friday) {
       scheduleDate = scheduleDate.add(const Duration(days: 1));
     } */
     return scheduleDate;
   }
 
-  tz.TZDateTime _netxinstanceofTenAM(int hour, int minute) {
+  tz.TZDateTime _netxinstanceofTenAM(
+      int year, int month, int day, int hour, int minute) {
+    tz.initializeTimeZones();
+    var d = DateTime(year, month, day, hour, minute);
+    var dStr = d.toString();
+    var time = tz.TZDateTime.parse(tz.local, dStr);
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
 
     tz.TZDateTime scheduleDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+        tz.TZDateTime(tz.local, year, now.month, now.day, hour, minute);
 
     if (scheduleDate.isBefore(now)) {
       scheduleDate = scheduleDate.add(const Duration(seconds: 5));
     }
 
     return scheduleDate;
-  }
+  } */
 }

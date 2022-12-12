@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/exception/app_exception.dart';
 import 'package:todo/helper/page_helper.dart';
-import 'package:todo/view/home_page.dart';
+import 'package:todo/view/home_view.dart';
 import 'package:todo/view_model/create_viewmodel.dart';
 import 'package:todo/view_model/login_viewmodel.dart';
 
@@ -12,7 +12,7 @@ enum AUTHOPTIONS {
 }
 
 class AuthPage extends StatefulWidget with PageHelper {
-  const AuthPage({super.key});
+  AuthPage({super.key});
   @override
   State<AuthPage> createState() => _AuthPageState();
 }
