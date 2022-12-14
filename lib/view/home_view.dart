@@ -446,7 +446,7 @@ class __BottomSheetContentState extends State<_BottomSheetContent> {
               from: tempDate,
               to: tempDate,
               isAllDay: true,
-              background: Colors.purple,
+              background: Colors.blue,
             ));
           }
           return Column(
@@ -459,6 +459,7 @@ class __BottomSheetContentState extends State<_BottomSheetContent> {
                   height: MediaQuery.of(context).size.height / 1.3,
                   child: SfCalendar(
                     dataSource: getCalendarData,
+                    todayHighlightColor: Colors.deepOrangeAccent,
                     initialDisplayDate: firebaseDate,
                     viewHeaderHeight: 30,
                     headerStyle:

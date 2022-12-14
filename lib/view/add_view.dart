@@ -107,7 +107,7 @@ class _AddTaskState extends State<AddTask> {
               from: tempDate,
               to: tempDate,
               isAllDay: true,
-              background: Colors.purple,
+              background: Colors.blue,
             ));
           }
           return Column(
@@ -120,6 +120,7 @@ class _AddTaskState extends State<AddTask> {
                   height: MediaQuery.of(context).size.height / 1.3,
                   child: SfCalendar(
                     dataSource: getCalendarData,
+                    todayHighlightColor: Colors.deepOrangeAccent,
                     viewHeaderHeight: 30,
                     headerStyle:
                         CalendarHeaderStyle(textStyle: PageHelper.textStyle()),
