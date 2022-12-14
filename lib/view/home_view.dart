@@ -442,11 +442,12 @@ class __BottomSheetContentState extends State<_BottomSheetContent> {
             DateTime tempDate =
                 DateFormat("yyyy-MM-dd").parse(dataReceived[i].taskDate!);
             collection.add(Meeting(
-                eventName: dataReceived[i].taskName,
-                from: tempDate,
-                to: tempDate,
-                isAllDay: true,
-                background: PageHelper.colors[indeks]));
+              eventName: dataReceived[i].taskName,
+              from: tempDate,
+              to: tempDate,
+              isAllDay: true,
+              background: Colors.purple,
+            ));
           }
           return Column(
             children: [
